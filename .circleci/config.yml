@@ -70,6 +70,7 @@ jobs:
             name: Frontend-audit
             command: |
               cd frontend/node_modules
+              npm install oauth-sign@^0.9.0
               npm audit fix --audit-level=critical --force
               npm audit fix --force
 
