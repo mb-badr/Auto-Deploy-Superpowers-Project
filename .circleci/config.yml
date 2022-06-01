@@ -70,7 +70,8 @@ jobs:
             name: Frontend-audit
             command: |
               cd frontend/node_modules
-              npm audit --audit-level=critical
+              npm audit fix --audit-level=critical --force
+
                 
   scan-backend:
     docker:
@@ -83,7 +84,7 @@ jobs:
           name: Backend-audit
           command: |
             cd backend/node_modules
-            npm audit --audit-level=critical
+            npm audit fix --audit-level=critical --force
 
 workflows:
   default:
