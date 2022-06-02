@@ -136,6 +136,33 @@ jobs:
 
       - destroy-environment
 
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      
+      - checkout
+      
+      - add_ssh_keys:
+          fingerprints: ["2f:b6:2a:32:2b:42:3b:6d:4f:87:00:31:f0:a5:98:4d"]      
+      
+      - attach_workspace:
+          at: ~/
+      
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible tar gzip awscli
+
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml
+      
+      - destroy-environment
+
+
 
 workflows:
   default:
@@ -152,3 +179,6 @@ workflows:
           requires: [build-backend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - configure-infrastructure:
+         requires: [deploy-infrastructure]
+
