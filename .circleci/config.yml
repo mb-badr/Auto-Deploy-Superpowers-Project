@@ -195,14 +195,14 @@ jobs:
 
       - run:
           name: Install dependencies
-            command: |
-              yum update -y
-              yum install -y tar gzip
-              yum install -y nodejs
-              # installing npm got it from https://linuxize.com/post/how-to-install-node-js-on-centos-7/
-              curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash - 
-              yum install -y python3
-              pip3 install ansible
+          command: |
+            yum update -y
+            yum install -y tar gzip
+            yum install -y nodejs
+            # installing npm got it from https://linuxize.com/post/how-to-install-node-js-on-centos-7/
+            curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash - 
+            yum install -y python3
+            pip3 install ansible
             
       - run:
           name: Get backend url
