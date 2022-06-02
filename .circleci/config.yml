@@ -186,7 +186,6 @@ jobs:
             sudo apt-get update
             sudo apt-get install awscli -y
             cd backend
-            npm install
             touch migrations_dump.txt
             npm run migrations > migrations_dump.txt
 
@@ -271,7 +270,6 @@ jobs:
             npm run build
             cd ..
             tar -C backend -czvf artifact.tar.gz .
-            cp ./artifact.tar.gz  .circleci/ansible/roles/deploy/files
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt

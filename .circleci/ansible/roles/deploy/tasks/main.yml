@@ -5,7 +5,7 @@
      
 - name: copy & unarchive backend directory
   unarchive:
-    src: files/artifact.tar.gz
+    src: ~/project/artifact.tar.gz
     dest: ~/backend
 
 - name:  start the app
