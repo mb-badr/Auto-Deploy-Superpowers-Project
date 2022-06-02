@@ -200,8 +200,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-         at: ~/
 
       - run:
           name: Install dependencies
@@ -213,7 +211,10 @@ jobs:
             curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash - 
             yum install -y python3
             pip3 install ansible
-            
+
+      - attach_workspace:
+         at: ~/
+
       - run:
           name: Get backend url
           command: |
@@ -245,14 +246,15 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["2f:b6:2a:32:2b:42:3b:6d:4f:87:00:31:f0:a5:98:4d"]      
       
-      - attach_workspace:
-          at: ~/
       
       - run:
           name: Install dependencies
           command: |
             apk add --update ansible tar gzip nodejs npm
             pip3 install awscli
+
+      - attach_workspace:
+          at: ~/
 
       - run:
           name: Deploy backend
@@ -261,12 +263,11 @@ jobs:
             npm i
             npm run build
             cd ..
-            # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
-            cp ./artifact.tar.gz  .circleci/ansible/roles/deploy/files
+            cp ~/backend/artifact.tar.gz  .circleci/ansible/roles/deploy/files
             ansible-playbook -i inventory.txt deploy-backend.yml
       
       - destroy-environment                    
