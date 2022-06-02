@@ -179,7 +179,6 @@ jobs:
             cd backend
             npm install
             npm run migrations > migrations_dump.txt
-      - destroy-environment
 
 
       - run:
@@ -189,6 +188,9 @@ jobs:
             then
                 curl https://kvdb.io/GTFV4fUL13ufphVifi7h15/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
+
+      - destroy-environment
+
      # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
