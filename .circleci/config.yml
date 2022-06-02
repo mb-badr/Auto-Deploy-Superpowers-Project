@@ -4,8 +4,15 @@ commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     steps:
+
       - run:
-          name: Destroy environments
+          name: empty & remove S3 bucket
+          when: on_fail
+          command: |
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
+
+      - run:
+          name: Delete Frontend & Backend Stacks
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
@@ -186,7 +193,7 @@ jobs:
       - run:
           name: Send migration results to kvdb.io
           command: |
-            export KVDB_URL= "https://kvdb.io/GTFV4fUL13ufphVifi7h15/migration_${CIRCLE_WORKFLOW_ID:0:7}"
+            export KVDB_URL=https://kvdb.io/GTFV4fUL13ufphVifi7h15/migration_${CIRCLE_WORKFLOW_ID:0:7}
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then                
                 curl ${KVDB_URL}  -d '1'
