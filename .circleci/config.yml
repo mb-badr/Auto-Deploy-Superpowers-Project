@@ -166,7 +166,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: circleci/node
     steps:
       - checkout
 
@@ -174,10 +174,11 @@ jobs:
           keys: [backend-build]
 
       - run:
-          name: Run migrations
+          name: Install awscli for rollback and Run migrations
           command: |
+            sudo apt-get update
+            sudo apt-get install awscli -y
             cd backend
-            sudo echo "127.0.0.1 localhost" >> /etc/hosts    # fix issue code: 'ENOTFOUND',  syscall: 'getaddrinfo'
             npm install
             npm run migrations > migrations_dump.txt
 
