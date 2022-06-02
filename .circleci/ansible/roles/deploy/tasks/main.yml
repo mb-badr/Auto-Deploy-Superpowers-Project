@@ -1,0 +1,15 @@
+- name:  create backend directory to copy the backend files
+  file:
+    path: ~/backend
+    state: directory
+     
+- name: copy & unarchive backend directory
+  unarchive:
+    src: artifact.tar.gz
+    dest: ~/backend
+- name: 
+    shell:
+      cd ~/backend
+      npm install
+      pm2 stop default
+      pm2 start npm -- start
