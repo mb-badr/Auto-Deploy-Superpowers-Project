@@ -196,9 +196,11 @@ jobs:
             cat backend/migrations_dump.txt
             KVDB_URL=https://kvdb.io/GTFV4fUL13ufphVifi7h15/migration_${CIRCLE_WORKFLOW_ID:0:7}
             echo ${KVDB_URL}
-            if grep -q "has been executed successfully" backend/migrations_dump.txt
+            if grep -q "has been executed successfully." backend/migrations_dump.txt
             then                
                 curl ${KVDB_URL}  -d '1'
+            else
+              echo "didn't find executed successfully in migrations_dump.txt"
             fi
 
       - destroy-environment
@@ -269,7 +271,7 @@ jobs:
             npm run build
             cd ..
             tar -C backend -czvf artifact.tar.gz .
-            cp ./artifact.tar.gz  .circleci/ansible/roles/deploy/files/artifact.tar.gz
+            cp ./artifact.tar.gz  .circleci/ansible/roles/deploy/files
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
