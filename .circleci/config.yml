@@ -15,20 +15,18 @@ commands:
           name: Delete Frontend & Backend Stacks
           when: on_fail
           command: |
+
             aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
             aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
 
   revert-migrations:
     description: Revert the last migration
-    parameters:
-        workflow_id:
-            type: string      
     steps:
         - run:
             name: Revert migrations
             when: on_fail
             command: |
-                SUCCESS=$(curl --insecure  https://kvdb.io/GTFV4fUL13ufphVifi7h15/migration_<< parameters.workflow_id >>)
+                SUCCESS=$(curl --insecure  https://kvdb.io/GTFV4fUL13ufphVifi7h15/migration_${CIRCLE_WORKFLOW_ID:0:7})
                 # Logic for reverting the database state
                 if (( $SUCCESS == 1 ));
                 then
