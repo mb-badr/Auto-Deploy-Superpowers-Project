@@ -316,9 +316,13 @@ jobs:
             --query 'Reservations[*].Instances[*].PublicDnsName' \
             --filters "Name=tag:Name,Values= backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --output text)
+            touch backend_ip.txt
+            echo "$BACKEND_IP" 
+            echo "$BACKEND_IP" >> backend_ip.txt
       - run:
           name: Backend smoke test.
           command: |
+            export BACKEND_IP=$(cat backend_ip.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
