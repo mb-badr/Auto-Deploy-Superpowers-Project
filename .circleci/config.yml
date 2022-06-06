@@ -304,10 +304,7 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-
-      - attach_workspace:
-          at: ~/
-
+  
       - run:
           name: Install dependencies
           command: |
@@ -316,14 +313,18 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            cat .circleci/ansible/inventory.txt
-            export BACKEND_IP=$(tail -n1 .circleci/ansible/inventory.txt)
-            echo "$BACKEND_IP" 
+            export BACKEND_IP=$(aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicDnsName' \
+            --filters "Name=tag:Name,Values= backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --output text)
+            echo "BACKEND_IP = ${BACKEND_IP}"
+
       - run:
           name: Backend smoke test.
           command: |
+            echo "BACKEND_IP = ${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
+            echo "API_URL = ${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
                 return 0
