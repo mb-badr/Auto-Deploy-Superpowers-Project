@@ -212,7 +212,6 @@ jobs:
       - run:
           name: Send migration results to kvdb.io
           command: |
-            cat migrations_dump.txt
             KVDB_URL=https://kvdb.io/GTFV4fUL13ufphVifi7h15/migration_${CIRCLE_WORKFLOW_ID:0:7}
             echo ${KVDB_URL}
             if grep -q "has been executed successfully." backend/migrations_dump.txt
