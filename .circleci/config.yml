@@ -348,6 +348,8 @@ jobs:
     steps:
       - checkout
 
+      - run: yum install -y tar gzip
+
       - run:
           name: Update cloudfront distribution
           command: |
@@ -371,6 +373,9 @@ jobs:
         - image: amazon/aws-cli
       steps:
         - checkout
+
+        - run: yum install -y tar gzip
+        
         - attach_workspace:
            at: ~/
 
@@ -396,9 +401,6 @@ jobs:
               else
                 echo "No old Stacks to Delete"
               fi
-        - destroy-environment   
-        - revert-migrations
-
           
 
 workflows:
