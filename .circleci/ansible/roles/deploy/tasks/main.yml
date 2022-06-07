@@ -9,6 +9,7 @@
     dest: ~/backend
 
 - name:  start the app
+  become: yes
   shell:
     cd ~/backend
     npm install
@@ -16,21 +17,24 @@
     pm2 start npm -- start
 
 - name:  Install NOde Exporter
+  become: yes
   shell:
-    sudo useradd --no-create-home node_exporter
+    useradd --no-create-home node_exporter
     wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
     tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
-    sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
+    cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
     rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
 - name: Configure a service
+  become: yes
   template:
     src: "files/node-exporter.service"
     dest: "/etc/systemd/system/node-exporter.service"
 
 
 - name: Configure systemd
+  become: yes
   shell: |
-    sudo systemctl daemon-reload
-    sudo systemctl enable node-exporter
-    sudo systemctl start node-exporter
+    systemctl daemon-reload
+    systemctl enable node-exporter
+    systemctl start node-exporter
