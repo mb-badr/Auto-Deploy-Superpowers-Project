@@ -221,9 +221,8 @@ jobs:
               echo "didn't find executed successfully in migrations_dump.txt"
             fi
 
-      # - destroy-environment
-
-      # - revert-migrations
+      - destroy-environment
+      - revert-migrations
 
   deploy-frontend:
     docker:
@@ -261,8 +260,8 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       
-      # - destroy-environment
-      # - revert-migrations                    
+      - destroy-environment
+      - revert-migrations                    
   deploy-backend:
     docker:
       - image: python:3.7-alpine3.11
@@ -296,8 +295,8 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
       
-      # - destroy-environment
-      # - revert-migrations                    
+      - destroy-environment
+      - revert-migrations                    
 
   smoke-test:
     docker:
@@ -340,8 +339,8 @@ jobs:
               return 1
             fi
 
-      # - destroy-environment   
-      # - revert-migrations
+      - destroy-environment   
+      - revert-migrations
 
   cloudfront-update:
     docker:
@@ -358,8 +357,8 @@ jobs:
             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople
 
-      # - destroy-environment   
-      # - revert-migrations
+      - destroy-environment   
+      - revert-migrations
 
   cleanup:
       docker:
