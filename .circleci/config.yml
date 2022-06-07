@@ -212,6 +212,7 @@ jobs:
       - run:
           name: Send migration results to kvdb.io
           command: |
+            cat backend/migrations_dump.txt
             KVDB_URL=https://kvdb.io/GTFV4fUL13ufphVifi7h15/migration_${CIRCLE_WORKFLOW_ID:0:7}
             echo ${KVDB_URL}
             if grep -q "has been executed successfully." backend/migrations_dump.txt
@@ -326,7 +327,7 @@ jobs:
             else
                 return 1
             fi
-            
+
       - run:
           name: Frontend smoke test.
           command: |
@@ -339,9 +340,9 @@ jobs:
             else
               return 1
             fi
-      - destroy-environment   
-      - revert-migrations
-      # Here's where you will add some code to rollback on failure  
+
+#      - destroy-environment   
+#     - revert-migrations
 
   cloudfront-update:
     docker:
