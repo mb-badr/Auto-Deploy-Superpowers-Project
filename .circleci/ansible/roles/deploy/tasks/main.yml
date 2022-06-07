@@ -9,7 +9,6 @@
     dest: ~/backend
 
 - name:  start the app
-  become: yes
   shell:
     cd ~/backend
     npm install
