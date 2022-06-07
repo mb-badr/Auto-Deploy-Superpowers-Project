@@ -378,7 +378,7 @@ jobs:
             name: Get old stack workflow id
             command: |
               # Fetch the Old workflow ID
-              ecport OldWorkflowID=$(cat ./.circleci/files/oldworkflowid.txt )
+              export OldWorkflowID=$(cat ./.circleci/files/oldworkflowid.txt )
               echo OldWorkflowID: "${OldWorkflowID}"
               echo CIRCLE_WORKFLOW_ID: "${CIRCLE_WORKFLOW_ID:0:7}"
               # Fetch the stack names          
